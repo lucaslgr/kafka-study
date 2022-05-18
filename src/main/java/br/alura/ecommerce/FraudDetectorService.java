@@ -6,9 +6,9 @@ class FraudDetectorService {
     public static void main(String[] args) {
         final String topic = "ecommerce_store_new_order";
         final var fraudDetectorService = new FraudDetectorService();
-        final var kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(), topic, fraudDetectorService::parse);
-        kafkaService.run();
-
+        try(final var kafkaService = new KafkaService(FraudDetectorService.class.getSimpleName(), topic, fraudDetectorService::parse)) {
+            kafkaService.run();
+        }
     }
 
     private void parse(ConsumerRecord<String, String> record) {

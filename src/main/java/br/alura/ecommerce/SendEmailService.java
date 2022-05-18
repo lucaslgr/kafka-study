@@ -6,9 +6,9 @@ class SendEmailService {
     public static void main(String[] args) {
         final var topic = "ecommerce_send_email";
         final var emailService = new SendEmailService();
-        var kafkaService = new KafkaService(SendEmailService.class.getSimpleName(), topic, emailService::parse);
-        kafkaService.run();
-
+        try(final var kafkaService = new KafkaService(SendEmailService.class.getSimpleName(), topic, emailService::parse)) {
+            kafkaService.run();
+        }
     }
 
     private void parse(ConsumerRecord<String, String> record) {
